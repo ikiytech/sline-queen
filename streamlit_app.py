@@ -22,10 +22,21 @@ class SLineOverlay(VideoTransformerBase):
                 cv2.putText(img, "👑 S-Line Queen!", (x, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
 
-        return img
+        return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 st.set_page_config(page_title="S-Line Live Cam", layout="centered")
 st.title("💃 S-Line Queen LIVE Detector")
 st.write("📸 Arahkan kamera HP-mu dan lihat siapa yang jadi S-Line Queen secara langsung! 👑")
 
-webrtc_streamer(key="sline", video_processor_factory=SLineOverlay)
+webrtc_streamer(
+    key="sline",
+    video_processor_factory=SLineOverlay,
+    media_stream_constraints={
+        "video": {
+            "width": {"ideal": 1280},
+            "height": {"ideal": 720},
+            "frameRate": {"ideal": 30}
+        },
+        "audio": False
+    }
+)
