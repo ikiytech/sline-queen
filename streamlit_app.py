@@ -18,27 +18,23 @@ class SLineOverlay(VideoTransformerBase):
                 bbox = det.location_data.relative_bounding_box
                 h, w, _ = img.shape
 
-                # Hitung posisi bounding box wajah
+                # Hitung koordinat bounding box
                 x1 = int(bbox.xmin * w)
                 y1 = int(bbox.ymin * h)
                 x2 = int((bbox.xmin + bbox.width) * w)
                 y2 = int((bbox.ymin + bbox.height) * h)
 
-                # Hitung titik tengah atas kepala (kira-kira posisi mahkota)
+                # Titik tengah atas kepala
                 center_x = int((x1 + x2) / 2)
                 top_y = y1
 
-                # Gambar garis vertikal ke atas
-                line_length = 150  # panjang garis ke atas
-                line_thickness = 3
-                line_color = (0, 0, 255)  # merah
-
+                # Gambar garis vertikal ke atas dari kepala
                 cv2.line(
                     img,
                     (center_x, top_y),
-                    (center_x, max(0, top_y - line_length)),
-                    line_color,
-                    line_thickness
+                    (center_x, max(0, top_y - 150)),  # 150 px ke atas
+                    (0, 0, 255),  # warna merah dalam format BGR
+                    3  # ketebalan
                 )
 
         return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
